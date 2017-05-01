@@ -1,0 +1,59 @@
+---
+
+# Git settings.
+setup_git_repo: true
+git_branch: master
+
+
+# Server User:
+server_user: "admin"
+# Password hash is for 'password'
+server_user_password: "$1$17737183$xagqW7yIF3v7yFor8L5Fo1"
+
+# Database settings.
+db_user: "cattail"
+db_name: "cattail"
+db_password: password
+
+# Setup db cron dump job:
+db_backup_database_job: true
+
+# Domain
+web_base_domain: "example.com"
+
+
+# Nginx and letsencrypt settings:
+nginx_strong_dh_group: true
+nginx_use_letsencrypt: true
+letsencrypt_staging: true
+certbot_admin_email: "admin@example.com"
+
+
+# Gunicorn settings.
+gunicorn_num_workers: 3
+gunicorn_timeout_seconds: 300
+
+
+# Cattail settings.
+run_django_db_migrations: true
+run_django_collectstatic: true
+
+django_debug: "False"
+django_secret_key: 'z^vnz%ck3#(f49$_7m@887i@-ndbm)tto^%&8rwvdzfq8y$$3$'
+django_allowed_hosts:
+  - "*"
+
+wagtail_site_name: "Cattail"
+django_base_url: "https://example.com/"
+
+django_recaptcha_public_key: "MyRecaptchaKey123"
+django_recaptcha_private_key: "MyRecaptchaPrivateKey456"
+
+django_time_zone: "NZ"
+django_date_format: "j F, Y"
+django_datetime_format: "j F, Y, P"
+
+backup_site_media_job: true
+
+cron_minutes: "0"
+cron_hours: "12"

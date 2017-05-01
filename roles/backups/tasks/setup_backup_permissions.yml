@@ -1,0 +1,11 @@
+---
+
+- name: Ensure that the backup file permissions are set properly
+  file:
+    path: "{{ backup_folder_path }}"
+    recurse: yes
+    owner: "{{ gunicorn_user }}"
+    group: "{{ backup_group }}"
+    state: directory
+    mode: 0770
+  tags: backups

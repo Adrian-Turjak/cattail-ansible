@@ -1,0 +1,20 @@
+---
+
+- name: Provision a Cattail web server
+  hosts: all
+  become: yes
+  remote_user: "{{ server_user }}"
+  become_user: root
+  vars:
+    - update_apt_cache: yes
+  vars_files:
+    - env_vars/base.yml
+    - env_vars/{{ env }}.yml
+
+  roles:
+    - base
+    - certbot
+    - db
+    - web
+    - backups
+    - nginx

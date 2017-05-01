@@ -1,0 +1,37 @@
+---
+
+virtualenv_python_version: python3.5
+
+# gunicorn settings:
+# For the number of workers, a good rule to follow is
+# 2 x number of CPUs + 1
+gunicorn_num_workers: 3
+# Setting this to 1 will restart the Gunicorn process each time
+# you make a request, basically reloading the code. Very handy
+# when developing. Set to 0 for unlimited requests (default).
+gunicorn_max_requests: 0
+gunicorn_timeout_seconds: 300
+
+# object-storage settings:
+object_storage_for_media: false
+object_storage_for_static: false
+s3_auto_create_bucket: True
+s3_querystring_auth: True
+s3_endpoint_url: ""
+s3_region_name: ""
+s3_custom_domain: ""
+s3_compress_url: ""
+
+
+# Django settings:
+django_debug: "False"
+django_time_zone: "UTC"
+django_date_format: ""
+django_datetime_format: ""
+django_email_backend: ""
+django_mail_host: ""
+django_email_port: ""
+django_email_use_tls: True
+django_default_from_email: ""
+django_email_host_user: ""
+django_email_host_password: ""

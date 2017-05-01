@@ -1,0 +1,17 @@
+---
+
+db_backup_database_job: false
+db_backup_database_to_object_storage: false
+backup_site_media_job: false
+backup_site_media_to_object_storage: false
+
+s3_backups_bucket_name: "{{ application_name }}-backups"
+s3_backups_expiration: 90
+
+postgres_user: postgres
+
+cron_minutes: "0"
+cron_hours: "12"
+# Script should run after the backups
+script_cron_minutes: "30"
+script_cron_hours: "12"

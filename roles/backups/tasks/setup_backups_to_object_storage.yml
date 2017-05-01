@@ -1,0 +1,18 @@
+---
+
+- name: Create the object storage backup script
+  template: src=backup_script.j2
+            dest={{ backup_script_location }}
+            owner={{ gunicorn_user }}
+            group={{ backup_group }}
+            mode=0660
+            backup=yes
+  tags: backups
+
+- cron:
+    name: "backup to object-storage"
+    minute: "{{ script_cron_minutes }}"
+    hour: "{{ script_cron_hours }}"
+    user: "{{ gunicorn_user }}"
+    job: "{{ virtualenv_path }}/bin/python3.5 {{ backup_script_location }}"
+  tags: backups

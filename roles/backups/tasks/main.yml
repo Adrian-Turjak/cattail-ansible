@@ -1,0 +1,22 @@
+---
+
+- include: setup_backup_folder.yml
+  when: db_backup_database_job or backup_site_media_job
+  tags: backups
+
+- include: setup_database_backup.yml
+  when: db_backup_database_job
+  tags: database backups
+
+- include: setup_media_backup.yml
+  when: backup_site_media_job and not object_storage_for_media
+  tags: media backups
+
+- include: setup_backups_to_object_storage.yml
+  when: db_backup_database_job and db_backup_database_to_object_storage or
+        backup_site_media_job and backup_site_media_to_object_storage
+  tags: object-storage backups
+
+- include: setup_backup_permissions.yml
+  when: db_backup_database_job or backup_site_media_job
+  tags: backups

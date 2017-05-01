@@ -1,0 +1,85 @@
+import os
+import sys
+import boto3
+from botocore.exceptions import ClientError
+
+# object-storage settings:
+AWS_ACCESS_KEY_ID = '{{ backup_settings.AWS_ACCESS_KEY_ID }}'
+AWS_SECRET_ACCESS_KEY = '{{ backup_settings.AWS_SECRET_ACCESS_KEY }}'
+AWS_BACKUPS_BUCKET_NAME = '{{ backup_settings.AWS_BACKUPS_BUCKET_NAME }}'
+AWS_AUTO_CREATE_BUCKET = {{ backup_settings.AWS_AUTO_CREATE_BUCKET }}
+{% if django_settings.AWS_S3_REGION_NAME %}
+AWS_S3_REGION_NAME = '{{ backup_settings.AWS_S3_REGION_NAME }}'
+{% else %}
+AWS_S3_REGION_NAME = None
+{% endif %}
+{% if django_settings.AWS_S3_ENDPOINT_URL %}
+AWS_S3_ENDPOINT_URL = '{{ backup_settings.AWS_S3_ENDPOINT_URL }}'
+{% else %}
+AWS_S3_ENDPOINT_URL = None
+{% endif %}
+
+BACKUP_DB_DIR = '{{ db_backup_folder }}'
+BACKUP_MEDIA_DIR = '{{ media_backup_folder }}'
+
+
+session = boto3.session.Session()
+client = boto3.client(
+    's3',
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_S3_REGION_NAME,
+    use_ssl=True,
+    endpoint_url=AWS_S3_ENDPOINT_URL,
+)
+
+
+try:
+    client.head_bucket(Bucket=AWS_BACKUPS_BUCKET_NAME)
+except ClientError as err:
+    if err.response['ResponseMetadata']['HTTPStatusCode'] == 301:
+        raise Exception(
+            "Bucket %s exists, but in a different "
+            "region than we are connecting to." % AWS_S3_REGION_NAME)
+    elif err.response['ResponseMetadata']['HTTPStatusCode'] == 404:
+        if AWS_AUTO_CREATE_BUCKET:
+            bucket_params = {
+              "Bucket": AWS_BACKUPS_BUCKET_NAME,
+            }
+            if AWS_S3_REGION_NAME != 'us-east-1':
+                bucket_params['CreateBucketConfiguration'] = {
+                    'LocationConstraint': region_name}
+            client.create_bucket(**bucket_params)
+            client.put_bucket_lifecycle_configuration(
+                Bucket=AWS_BACKUPS_BUCKET_NAME,
+                LifecycleConfiguration={
+                    'Rules': [
+                        {
+                            'Status': 'Enabled',
+                            'Filter': {'Prefix': ''},
+                            'Expiration': {'Days': {{ backup_settings.AWS_BACKUPS_EXPIRATION }}},
+                            'Transitions': [{'Days': 1, 'StorageClass': 'GLACIER'}],
+                            'ID': 'backups'}]
+                        }
+                    ]
+                }
+            )
+        else:
+            raise Exception(
+                "Bucket %s does not exist, autocreate isn't set." % AWS_S3_REGION_NAME)
+
+for file in os.listdir(BACKUP_DB_DIR):
+  upload_name = "database/%s" % file
+  with open("%s/%s" % (BACKUP_DB_DIR, file), 'rb') as content:
+      client.put_object(
+          Key=upload_name, Bucket=AWS_BACKUPS_BUCKET_NAME,
+          Body=content, StorageClass="STANDARD_IA")
+  os.remove("%s/%s" % (BACKUP_DB_DIR, file))
+
+for file in os.listdir(BACKUP_MEDIA_DIR):
+  upload_name = "media/%s" % file
+  with open("%s/%s" % (BACKUP_MEDIA_DIR, file), 'rb') as content:
+      client.put_object(
+          Key=upload_name, Bucket=AWS_BACKUPS_BUCKET_NAME,
+          Body=content, StorageClass="STANDARD_IA")
+  os.remove("%s/%s" % (BACKUP_MEDIA_DIR, file))

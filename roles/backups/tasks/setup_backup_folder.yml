@@ -1,0 +1,31 @@
+---
+
+- name: Create the backup group
+  group: name={{ backup_group }} system=yes state=present
+  tags: backups
+
+- name: Add the application user to the backups group
+  user: name={{ gunicorn_user }} groups={{ backup_group }} append=yes
+  tags: backups
+
+- name: Add the postgres user to the backups group
+  user: name={{ postgres_user }} groups={{ backup_group }} append=yes
+  tags: backups
+
+- name: setup backup folder
+  file:
+    path: "{{ backup_folder_path }}"
+    state: directory
+  tags: backups
+
+- name: setup db backup folder
+  file:
+    path: "{{ db_backup_folder }}"
+    state: directory
+  tags: backups
+
+- name: setup media backup folder
+  file:
+    path: "{{ media_backup_folder }}"
+    state: directory
+  tags: backups

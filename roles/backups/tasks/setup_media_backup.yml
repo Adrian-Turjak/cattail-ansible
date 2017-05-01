@@ -1,0 +1,9 @@
+---
+
+- cron:
+    name: "media tar job"
+    minute: "{{ cron_minutes }}"
+    hour: "{{ cron_hours }}"
+    user: "{{ gunicorn_user }}"
+    job: /bin/tar -czf {{ media_backup_folder }}/media_`/bin/date "+\%Y-\%m-\%dT\%H-\%M-\%S"`.tar.gz -C {{ virtualenv_path }} media
+  tags: backups

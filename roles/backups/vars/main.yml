@@ -1,0 +1,18 @@
+---
+
+backup_folder_path: "/opt/{{ application_name }}-backups"
+backup_script_location: "{{ backup_folder_path }}/backup.py"
+db_backup_folder: "{{ backup_folder_path }}/db"
+media_backup_folder: "{{ backup_folder_path }}/media"
+
+backup_group: backups
+
+# backup script settings.
+backup_settings:
+  AWS_ACCESS_KEY_ID: "{{ s3_access_key_id }}"
+  AWS_SECRET_ACCESS_KEY: "{{ s3_secret_access_key }}"
+  AWS_BACKUPS_BUCKET_NAME: "{{ s3_backups_bucket_name }}"
+  AWS_AUTO_CREATE_BUCKET: "{{ s3_auto_create_bucket }}"
+  AWS_S3_REGION_NAME: "{{ s3_region_name }}"
+  AWS_S3_ENDPOINT_URL: "{{ s3_endpoint_url }}"
+  AWS_BACKUPS_EXPIRATION: "{{ s3_backups_expiration }}"

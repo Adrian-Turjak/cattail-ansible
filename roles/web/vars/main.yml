@@ -1,0 +1,56 @@
+---
+
+# Application settings.
+virtualenv_path: "/opt/{{ application_name }}"
+project_path: "{{ virtualenv_path }}/{{ project_name }}"
+settings_file_path: "{{ project_path }}/cattail/settings/production.py"
+application_log_dir: "{{ virtualenv_path }}/logs"
+application_log_file: "{{ application_log_dir }}/gunicorn_supervisor.log"
+requirements_file: "{{ project_path }}/requirements.txt"
+
+
+# Gunicorn settings.
+gunicorn_user: "{{ application_name }}"
+gunicorn_group: webapps
+
+
+# Nginx settings.
+nginx_access_log_file: "{{ application_log_dir }}/nginx_access.log"
+nginx_error_log_file: "{{ application_log_dir }}/nginx_error.log"
+nginx_static_dir: "{{ virtualenv_path }}/static/"
+nginx_media_dir: "{{ virtualenv_path }}/media/"
+
+
+# Django settings variables.
+django_settings:
+  DEBUG: "{{ django_debug }}"
+  SECRET_KEY: "{{ django_secret_key }}"
+  ALLOWED_HOSTS: "{{ django_allowed_hosts }}"
+  AWS_ACCESS_KEY_ID: "{{ s3_access_key_id }}"
+  AWS_SECRET_ACCESS_KEY: "{{ s3_secret_access_key }}"
+  AWS_STORAGE_BUCKET_NAME: "{{ s3_bucket_name }}"
+  AWS_AUTO_CREATE_BUCKET: "{{ s3_auto_create_bucket }}"
+  AWS_QUERYSTRING_AUTH: "{{ s3_querystring_auth }}"
+  AWS_S3_REGION_NAME: "{{ s3_region_name }}"
+  AWS_S3_ENDPOINT_URL: "{{ s3_endpoint_url }}"
+  AWS_S3_CUSTOM_DOMAIN: "{{ s3_custom_domain }}"
+  COMPRESS_URL: '{{ s3_compress_url }}'
+  MEDIA_ROOT: "{{ nginx_media_dir }}"
+  STATIC_ROOT: "{{ nginx_static_dir }}"
+  DATABASE_NAME: "{{ db_name }}"
+  DATABASE_USER: "{{ db_user }}"
+  DATABASE_PASSWORD: "{{ db_password }}"
+  WAGTAIL_SITE_NAME: "{{ wagtail_site_name }}"
+  TIME_ZONE: "{{ django_time_zone }}"
+  DATE_FORMAT: "{{ django_date_format }}"
+  DATETIME_FORMAT: "{{ django_datetime_format }}"
+  BASE_URL: "{{ django_base_url }}"
+  RECAPTCHA_PUBLIC_KEY: "{{ django_recaptcha_public_key }}"
+  RECAPTCHA_PRIVATE_KEY: "{{ django_recaptcha_private_key }}"
+  EMAIL_BACKEND:  "{{ django_email_backend }}"
+  MAIL_HOST: "{{ django_mail_host }}"
+  EMAIL_PORT: "{{ django_email_port }}"
+  EMAIL_USE_TLS: "{{ django_email_use_tls }}"
+  DEFAULT_FROM_EMAIL: "{{ django_default_from_email }}"
+  EMAIL_HOST_USER: "{{ django_email_host_user }}"
+  EMAIL_HOST_PASSWORD: "{{ django_email_host_password }}"
