@@ -59,7 +59,7 @@ except ClientError as err:
                             'Filter': {'Prefix': ''},
                             'Expiration': {'Days': {{ backup_settings.AWS_BACKUPS_EXPIRATION }}},
                             'Transitions': [{'Days': 1, 'StorageClass': 'GLACIER'}],
-                            'ID': 'backups'}]
+                            'ID': 'backups',
                         }
                     ]
                 }
