@@ -37,7 +37,7 @@ LOGGING = {
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': '{{ application_log_dir}}/cattail.log',
             'when': 'midnight',
-            'backupCount': '30',
+            'backupCount': 30,
         },
     },
     'loggers': {
@@ -108,8 +108,8 @@ NOCAPTCHA = True
 {% if django_settings.EMAIL_BACKEND %}
 EMAIL_BACKEND = '{{ django_settings.EMAIL_BACKEND }}'
 {% endif %}
-{% if django_settings.MAIL_HOST %}
-MAIL_HOST = '{{ django_settings.MAIL_HOST }}'
+{% if django_settings.EMAIL_HOST %}
+EMAIL_HOST = '{{ django_settings.EMAIL_HOST }}'
 {% endif %}
 {% if django_settings.EMAIL_PORT %}
 EMAIL_PORT = {{ django_settings.EMAIL_PORT }}

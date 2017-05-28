@@ -26,8 +26,18 @@
     - python3-psycopg2
     - python3-dev
     - python3-pip
+    - ipython
   tags: packages
 
 - name: Upgrade pip
   pip: name=pip state=latest
   tags: packages
+
+# For silly situations such as when a provider blocks ipv6 smtp
+# or has limited ipv6 support
+- name: Setup ipv4 as default for dns
+  when: ipv4_dns_as_default is defined and ipv4_dns_as_default
+  lineinfile:
+    path: /etc/gai.conf
+    line: 'precedence ::ffff:0:0/96  100'
+    state: present

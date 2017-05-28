@@ -21,6 +21,9 @@ s3_endpoint_url: ""
 s3_region_name: ""
 s3_custom_domain: ""
 s3_compress_url: ""
+s3_access_key_id: ""
+s3_secret_access_key: ""
+s3_bucket_name: ""
 
 
 # Django settings:
@@ -29,7 +32,7 @@ django_time_zone: "UTC"
 django_date_format: ""
 django_datetime_format: ""
 django_email_backend: ""
-django_mail_host: ""
+django_email_host: ""
 django_email_port: ""
 django_email_use_tls: True
 django_default_from_email: ""

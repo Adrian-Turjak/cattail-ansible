@@ -48,7 +48,7 @@ django_settings:
   RECAPTCHA_PUBLIC_KEY: "{{ django_recaptcha_public_key }}"
   RECAPTCHA_PRIVATE_KEY: "{{ django_recaptcha_private_key }}"
   EMAIL_BACKEND:  "{{ django_email_backend }}"
-  MAIL_HOST: "{{ django_mail_host }}"
+  EMAIL_HOST: "{{ django_email_host }}"
   EMAIL_PORT: "{{ django_email_port }}"
   EMAIL_USE_TLS: "{{ django_email_use_tls }}"
   DEFAULT_FROM_EMAIL: "{{ django_default_from_email }}"
