@@ -56,7 +56,7 @@ AWS_SECRET_ACCESS_KEY = '{{ django_settings.AWS_SECRET_ACCESS_KEY }}'
 AWS_STORAGE_BUCKET_NAME = '{{ django_settings.AWS_STORAGE_BUCKET_NAME }}'
 AWS_AUTO_CREATE_BUCKET = {{ django_settings.AWS_AUTO_CREATE_BUCKET }}
 AWS_QUERYSTRING_AUTH = {{ django_settings.AWS_QUERYSTRING_AUTH }}
-{% if django_settings.AWS_S3_REGION_NAME %}
+{% if django_settings.AWS_S3_CUSTOM_DOMAIN %}
 AWS_S3_CUSTOM_DOMAIN = '{{ django_settings.AWS_S3_CUSTOM_DOMAIN }}'
 {% endif %}
 {% if django_settings.AWS_S3_REGION_NAME %}

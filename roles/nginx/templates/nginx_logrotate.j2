@@ -1,0 +1,10 @@
+/opt/cattail/logs/nginx*.log {
+	su cattail webapps
+	daily
+	missingok
+	rotate 30
+	compress
+	delaycompress
+	notifempty
+	create 0640 cattail webapps
+}

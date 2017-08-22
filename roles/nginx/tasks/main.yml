@@ -14,6 +14,10 @@
             backup=yes
   notify: reload nginx
 
+- name: Setup cattail nginx logrotate
+  template: src=nginx_logrotate.j2
+            dest=/etc/logrotate.d/cattail-nginx
+
 - name: Ensure that the default site is disabled
   file: path=/etc/nginx/sites-enabled/default state=absent
   notify: reload nginx

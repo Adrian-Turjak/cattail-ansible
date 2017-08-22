@@ -22,7 +22,7 @@
 
 - name: Run Django collectstatic
   django_manage:
-    command: collectstatic
+    command: collectstatic --no-input
     app_path: "{{ project_path }}"
     virtualenv: "{{ virtualenv_path }}"
   when: run_django_collectstatic is defined and run_django_collectstatic
